@@ -29,6 +29,7 @@ object FlightDate {
           FlightDate(day, month, year)
       else
         throw new AssertionError(s"Fecha inválida: día, mes o año no son correctos. Entrada: $date.")
+      // TODO SE PUEDE MEJORAR TENIENDO EN CUENTA AÑOS BISIESTOS Y LOS DIAS DE CADA MES
 
       case _ => throw new InvalidFormatException(s"$date tiene un formato inválido")
     }
