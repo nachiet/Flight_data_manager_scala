@@ -10,6 +10,7 @@ object FlightsLoaderConfig {
   val hasHeaders: Boolean = config.getBoolean("hasHeaders")
   val delimiter: String = config.getString("delimiter")
   val outputDir: String = config.getString("outputDir")
+  val useFilteredOrigin: Boolean = config.getBoolean("useFilteredOrigin")
   val headers: List[String] = config.getStringList("headers").asScala.toList
   val headersLength: Int = headers.length
   val columnIndexMap: Map[String, Int] = headers.map(x => (x, headers.indexOf(x))).toMap

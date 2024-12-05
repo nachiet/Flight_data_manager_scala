@@ -15,21 +15,20 @@ case class FlightsFileReport(validRows: Seq[Row],
                             ) {
 
   override val toString: String = {
-    // TODO: Se puede mejorar
 
-    val validRowsCount = validRows.size
-    val invalidRowsCount = invalidRows.size
+    val validRowsCount: Int = validRows.length
+    val invalidRowsCount: Int = invalidRows.length
 
-    val errorSummary = invalidRows
+    val errorSummary: String = invalidRows
       .groupBy(x => x)
-      .map(x => s"<${x._1}>: ${x._2.size}" ).mkString("\n")
+      .map(x => s"<${x._1}>: ${x._2.length}" )
+      .mkString("\n")
 
-    s"""
-       |FlightsReport:
-       |  - $validRowsCount valid rows.
-       |  - $invalidRowsCount invalid rows.
-       |Error summary:
-       |    $errorSummary
+    s"""|FlightsFileReport:
+        |  - $validRowsCount valid rows.
+        |  - $invalidRowsCount invalid rows.
+        |Error summary:
+        |$errorSummary
     """.stripMargin
   }
 }
@@ -44,9 +43,9 @@ object FlightsFileReport {
    * @return FlightsFileReport
    */
   def fromRows(rows: Seq[Try[Row]]): FlightsFileReport = {
-    val valid_rows = rows.filter(_.isSuccess).map(_.get)
-    val invalid_rows = rows.filter(_.isFailure).map(_.failed.get.toString)
-    val flights = valid_rows.map(Flight.fromRow)
+    val valid_rows: Seq[Row] = rows.filter(_.isSuccess).map(_.get)
+    val invalid_rows: Seq[String] = rows.filter(_.isFailure).map(_.failed.get.toString)
+    val flights: Seq[Flight] = valid_rows.map(Flight.fromRow)
 
     FlightsFileReport(valid_rows, invalid_rows, flights)
   }

@@ -11,15 +11,24 @@ object FlightsLoaderApp extends App {
   val flightReport: FlightsFileReport = FlightsFileReport.fromRows(rows)
   val flights: Seq[Flight] = flightReport.flights
 
-  flights.map(_.origin).distinct.foreach { origin =>
-      val filteredFlights: Seq[Flight] = flights.filter(_.origin == origin)
-      val delayedFlights: Seq[Flight] = filteredFlights.filter(_.isDelayed).sorted
-      val notDelayedFlights: Seq[Flight] = filteredFlights.filterNot(_.isDelayed).sorted
-
-      val delayedFlightsObj: String = s"${FlightsLoaderConfig.outputDir}/${origin.code}_delayed.obj"
-      val flightsObj: String = s"${FlightsLoaderConfig.outputDir}/${origin.code}.obj"
-
-      FileUtils.writeFile(delayedFlights, delayedFlightsObj)
-      FileUtils.writeFile(notDelayedFlights, flightsObj)
+  val flightsOrigin: Seq[String] = {
+    if (FlightsLoaderConfig.useFilteredOrigin)
+      FlightsLoaderConfig.filteredOrigin
+    else
+      flights.map(_.origin.code).distinct
   }
+
+  flightsOrigin.foreach { origin =>
+    val filteredFlights: Seq[Flight] = flights.filter(_.origin.code == origin)
+    val delayedFlights: Seq[Flight] = filteredFlights.filter(_.isDelayed).sorted
+    val notDelayedFlights: Seq[Flight] = filteredFlights.filterNot(_.isDelayed).sorted
+
+    val delayedFlightsObj: String = s"${FlightsLoaderConfig.outputDir}/${origin}_delayed.obj"
+    val flightsObj: String = s"${FlightsLoaderConfig.outputDir}/${origin}.obj"
+
+    FileUtils.writeFile(delayedFlights, delayedFlightsObj)
+    FileUtils.writeFile(notDelayedFlights, flightsObj)
+  }
+
+  println(flightReport)
 }

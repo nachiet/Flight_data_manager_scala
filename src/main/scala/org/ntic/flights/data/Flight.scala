@@ -1,6 +1,5 @@
 package org.ntic.flights.data
 
-import com.typesafe.config.ConfigFactory
 import org.ntic.flights.FlightsLoaderConfig
 
 /**
@@ -15,7 +14,7 @@ import org.ntic.flights.FlightsLoaderConfig
  * @param depDelay: Double
  * @param arrDelay: Double
  */
-case class Flight (flDate: String,
+case class Flight(flDate: String,
                   origin: Airport,
                   dest: Airport,
                   scheduledDepTime: Time,
@@ -29,9 +28,9 @@ case class Flight (flDate: String,
 
   lazy val actualArrTime: Time = Time.fromMinutes(scheduledArrTime.asMinutes + arrDelay.toInt)
 
-  val isDelayed: Boolean = if (depDelay != 0 || arrDelay != 0) true else false
+  val isDelayed: Boolean = if (depDelay != 0 | arrDelay != 0) true else false
 
-  override def compare(that: Flight): Int = actualArrTime - that.actualArrTime
+  override def compare(that: Flight): Int = this.actualArrTime - that.actualArrTime
 }
 
 
@@ -47,7 +46,7 @@ object Flight {
    */
 
   def fromString(flightInfo: String): Flight = {
-    val columns: Array[String] = flightInfo.split(FlightsLoaderConfig.delimiter).toArray
+    val columns: Array[String] = flightInfo.split(FlightsLoaderConfig.delimiter)
 
     /**
      * This function is used to get the value of a column from the array of String generated from the row of the csv
@@ -56,9 +55,8 @@ object Flight {
      * @return String value of the column
      */
     def getColValue(colName: String): String = {
+      val index: Int = FlightsLoaderConfig.columnIndexMap.getOrElse(colName, throw new IllegalArgumentException(s"Column $colName does not exist in configuration"))
 
-      // TODO: Mejorar excepcion
-      val index = FlightsLoaderConfig.columnIndexMap.getOrElse(colName, throw new Exception(s"Column $colName does not exist in configuration"))
       columns(index)
     }
 
@@ -93,7 +91,6 @@ object Flight {
    * @return Flight
    */
   def fromRow(row: Row): Flight = {
-    // TODO: Revisar
     val oriAirport = Airport(
       airportId = row.originAirportId,
       code = row.origin,

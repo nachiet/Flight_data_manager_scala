@@ -14,7 +14,6 @@ object FileUtils {
    * @return Boolean: true if the line is invalid, false otherwise
    */
   def isInvalidLine(s: String): Boolean = {
-
     if (s.isEmpty | s.split(FlightsLoaderConfig.delimiter).length != FlightsLoaderConfig.headersLength)
       true
     else
@@ -28,7 +27,6 @@ object FileUtils {
    * @return List[String]
    */
   def getLinesFromFile(filePath: String): List[String] = {
-
     val src = Source.fromFile(filePath)
     src.getLines().toList
   }
@@ -40,8 +38,10 @@ object FileUtils {
    * @return Seq[Try[Row]]
    */
   def loadFromFileLines(fileLines: Seq[String]): Seq[Try[Row]] = {
-
-    fileLines.tail.map(x => Row.fromStringList(x.split(FlightsLoaderConfig.delimiter)))
+    if (FlightsLoaderConfig.hasHeaders)
+      fileLines.tail.map(x => Row.fromStringList(x.split(FlightsLoaderConfig.delimiter).toIndexedSeq))
+    else
+      fileLines.map(x => Row.fromStringList(x.split(FlightsLoaderConfig.delimiter).toIndexedSeq))
   }
 
   def writeFile(flights: Seq[Flight], outputFilePath: String): Unit = {

@@ -69,6 +69,4 @@ class FileUtilsTest extends AnyFlatSpec with Matchers {
     result.length shouldBe 14
   }
 
-
-
 }

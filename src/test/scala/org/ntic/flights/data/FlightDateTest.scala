@@ -26,4 +26,8 @@ class FlightDateTest extends AnyFlatSpec with Matchers {
     result shouldEqual expected
   }
 
+  "A FlightDate" should "raise an AssertionError for an improperly formatted date string" in {
+    val dateStr = "79/1/2023 12:00:00 AM"
+    an [AssertionError] should be thrownBy FlightDate.fromString(dateStr)
+  }
 }

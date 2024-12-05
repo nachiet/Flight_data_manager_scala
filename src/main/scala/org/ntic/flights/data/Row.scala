@@ -44,21 +44,24 @@ object Row {
    */
   def fromStringList(tokens: Seq[String]): Try[Row] = {
 
-    val trimmed_tokens = tokens.map(_.trim)
+    val trimmed_tokens: Seq[String] = tokens.map(_.trim)
 
-    Try(Row(trimmed_tokens(0),
-      trimmed_tokens(1).toLong,
-      trimmed_tokens(2),
-      trimmed_tokens(3),
-      trimmed_tokens(4),
-      trimmed_tokens(5).toLong,
-      trimmed_tokens(6),
-      trimmed_tokens(7),
-      trimmed_tokens(8),
-      trimmed_tokens(9),
-      trimmed_tokens(10).toDouble,
-      trimmed_tokens(11),
-      trimmed_tokens(12).toDouble
-    ))
+    Try {
+      Row(
+        trimmed_tokens(0),
+        trimmed_tokens(1).toLong,
+        trimmed_tokens(2),
+        trimmed_tokens(3),
+        trimmed_tokens(4),
+        trimmed_tokens(5).toLong,
+        trimmed_tokens(6),
+        trimmed_tokens(7),
+        trimmed_tokens(8),
+        trimmed_tokens(9),
+        trimmed_tokens(10).toDouble,
+        trimmed_tokens(11),
+        trimmed_tokens(12).toDouble
+      )
+    }
   }
 }

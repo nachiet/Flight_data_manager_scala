@@ -1,7 +1,7 @@
 import sbt.Keys.libraryDependencies
 import sbtassembly.AssemblyPlugin.defaultShellScript
 
-ThisBuild / version := "0.1.0-SNAPSHOT"
+ThisBuild / version := "1.0.0"
 ThisBuild / scalaVersion := "2.13.15"
 ThisBuild / assemblyPrependShellScript := Some(defaultShellScript)
 
@@ -10,14 +10,10 @@ val mainClassName = "org.ntic.flights.FlightsLoaderApp"
 lazy val root = (project in file("."))
   .settings(
     name := "Flight_data_manager",
-    Compile / run / mainClass := Some("com.ntic"),
-    Compile / packageBin / mainClass := Some("com.ntic"),
-    assembly / mainClass := Some("MiPlanner"),
+    Compile / run / mainClass := Some("org.ntic.flights.FlightsLoaderApp"),
+    Compile / packageBin / mainClass := Some("org.ntic.flights.FlightsLoaderApp"),
+    assembly / mainClass := Some("org.ntic.flights.FlightsLoaderApp"),
     assembly / assemblyJarName := "flights_loader.jar",
-    // TODO: define la clase principal del proyecto para la etapa `run` de `Compile`
-    // TODO: define la clase principal del proyecto para la etapa `packageBin` de `Compile`
-    // TODO: define la clase principal del proyecto para el ensamblado de `assembly`
-    // TODO: define `flights_loader.jar` como el nombre del jar que se genera en la etapa assembly
 
     libraryDependencies ++= Seq(
       "com.typesafe" % "config" % "1.4.3",

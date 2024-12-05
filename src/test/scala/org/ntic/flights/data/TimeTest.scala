@@ -33,5 +33,28 @@ class TimeTest extends AnyFlatSpec with Matchers {
     result shouldEqual expected
   }
 
+  "A Time" should "compare two Time objects correctly" in {
+    val t1 = Time(10, 30)
+    val t2 = Time(12, 15)
+
+    (t1 < t2) shouldEqual true
+    (t1 > t2) shouldEqual false
+    (t1 == t2) shouldEqual false
+    t1.compare(t2) should be < 0
+  }
+
+  "A Time" should "not allow invalid hour values" in {
+    intercept[IllegalArgumentException] {
+      Time(24, 0)
+    }.getMessage shouldEqual "requirement failed: hours must be within 0 and 23"
+  }
+
+  "A Time" should "not allow invalid minute values" in {
+    intercept[IllegalArgumentException] {
+      Time(10, 60)
+    }.getMessage shouldEqual "requirement failed: minutes must be within 0 and 59"
+  }
 }
+
+
 
